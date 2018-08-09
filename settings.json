@@ -1,0 +1,157 @@
+{
+    "report_path": "reports/",
+    "bond_tickers": [
+        "lsbdx",
+        "merix",
+        "pttrx",
+        "bagix",
+        "phiyx",
+        "eiblx",
+        "kifyx",
+        "lasyx",
+        "bgcix",
+        "vwiux",
+        "vwalx",
+        "bnd",
+        "mna",
+        "bond",
+        "phb",
+        "bkln",
+        "pgx"
+    ],
+    "international_security_tickers": [
+        "dfcex",
+        "dodfx",
+        "hainx",
+        "aepfx",
+        "dfivx",
+        "disvx",
+        "veu"
+    ],
+    "domestic_security_tickers": [
+        "bbtex",
+        "sladx",
+        "dfusx",
+        "swppx",
+        "schb",
+        "tgcex",
+        "hacax",
+        "gfffx",
+        "wvalx",
+        "llpfx",
+        "dflvx",
+        "ijh",
+        "dfsvx"
+    ],
+    "total_return_positions": [
+        {
+            "name": "total bond (taxable)",
+            "row": 4,
+            "column": "b"
+        },
+        {
+            "name": "total bond (tax sensitive)",
+            "row": 4,
+            "column": "c"
+        },
+        {
+            "name": "total listed bond grp",
+            "row": 4,
+            "column": "e"
+        },
+        {
+            "name": "total equity group",
+            "row": 12,
+            "column": "b"
+        },
+        {
+            "name": "total equity group (new)",
+            "row": 12,
+            "column": "c"
+        },
+        {
+            "name":"total equity group (new-t)",
+            "row":12,
+            "column":"d"
+        },
+        {
+            "name": "total listed equity grp",
+            "row": 12,
+            "column": "e"
+        },
+        {
+            "name": "total equity index",
+            "row": 12,
+            "column": "f"
+        },
+        {
+            "name": "total 6040 portfolio",
+            "row": 20,
+            "column": "b"
+        },
+        {
+            "name": "total 6040 (new)",
+            "row": 20,
+            "column": "c"
+        },
+        {
+            "name": "total 6040 (new-t)",
+            "row": 20,
+            "column": "d"
+        },
+        {
+            "name": "6040 listed portfolio",
+            "row": 20,
+            "column": "e"
+        },
+        {
+            "name": "6040 index",
+            "row": 20,
+            "column": "f"
+        }
+    ],
+    "index_positions": [
+        {
+            "ticker": "agg",
+            "row": 4,
+            "column": "f"
+        },
+        {
+            "ticker": "spy",
+            "row": 12,
+            "column": "g"
+        },
+        {
+            "ticker": "cwi",
+            "row": 12,
+            "column": "h"
+        },
+        {
+            "ticker": "dfgex",
+            "row": 28,
+            "column": "b"
+        },
+        {
+            "ticker": "rwo",
+            "row": 28,
+            "column": "c"
+        }
+    ],
+    "comparison_positions": [
+        {
+            "security_set": "bonds",
+            "row": 36,
+            "column": "b"
+        },
+        {
+            "security_set": "international_securities",
+            "row": 44,
+            "column": "b"
+        },
+        {
+            "security_set": "domestic_securities",
+            "row": 52,
+            "column": "b"
+        }
+    ]
+}
