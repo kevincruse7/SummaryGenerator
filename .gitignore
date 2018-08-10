@@ -1,0 +1,5 @@
+# PyInstaller build files
+__pycache__/
+build/
+SummaryGenerator.exe
+SummaryGenerator.spec

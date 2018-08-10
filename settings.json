@@ -1,5 +1,5 @@
 {
-    "report_path": "reports/",
+    "report_path": "sample_reports/",
     "bond_tickers": [
         "lsbdx",
         "merix",

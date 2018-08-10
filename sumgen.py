@@ -3,7 +3,7 @@ Processes for transferring data from proprietary portfolio review spreadsheet
 to summary spreadsheet.
 
 Author: Kevin Cruse
-Version: 1.0
+Version: 1.1
 """
 
 from json import loads
@@ -207,11 +207,12 @@ write_comparison(summary_worksheet, bonds,
                       if position['security_set'] == 'bonds'))
 write_comparison(summary_worksheet, international_securities,
                  next(position for position in comparison_positions
-                      if position['security_set'] == 'international_securities')
-                 )
+                      if position['security_set'] ==
+                      'international_securities'))
 write_comparison(summary_worksheet, domestic_securities,
                  next(position for position in comparison_positions
                       if position['security_set'] == 'domestic_securities'))
 
 summary_workbook.save(report_path + summary_workbook_filename)
 print('Done!')
+input('\nPress \'Enter\' to quit.')
