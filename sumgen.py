@@ -3,7 +3,7 @@ Processes for transferring data from proprietary portfolio review spreadsheet
 to summary spreadsheet.
 
 Author: Kevin Cruse
-Version: 1.1
+Version: 1.2
 """
 
 from json import loads
@@ -24,7 +24,35 @@ class SecurityReturn:
         self.five_year = five_year
 
 
-def get_security_info(worksheet, names, name_column):
+def read_workbook(name, read):
+    """
+    Reads in Excel workbook that user enters.
+
+    Args:
+        name: String prompt to give user to specify type of workbook.
+        read: Boolean indicating whether to use read only mode or not.
+        data: Boolean indicating whether to use data only mode or not.
+
+    Returns:
+        Tuple with openpyxl workbook object and string workbook filename.
+    """
+    typo = True
+    while typo:
+        workbook_filename = (input('Enter the ' + name + ' filename: ') +
+                             '.xlsx')
+
+        # Check if filename is valid
+        try:
+            workbook = load_workbook(report_path + workbook_filename,
+                                     read_only=read, data_only=True)
+            typo = False
+        except FileNotFoundError:
+            print('File does not exist.\n')
+
+    return workbook, workbook_filename
+
+
+def get_security_info(worksheet, names, name_column, start_column):
     """
     Gets security return data from ticker.
 
@@ -45,14 +73,29 @@ def get_security_info(worksheet, names, name_column):
     # Connect ticker or name list to corresponding return data
     securities = []
     for name in names:
-        row_num = all_names.index(name.lower())
-        securities.append(SecurityReturn(name.upper(),
-                                         worksheet[row_num][14].value,
-                                         worksheet[row_num][15].value,
-                                         worksheet[row_num][16].value,
-                                         worksheet[row_num][17].value,
-                                         worksheet[row_num][18].value,
-                                         worksheet[row_num][19].value))
+        row = all_names.index(name.lower())
+        security = SecurityReturn(name.upper())
+
+        security.year_to_date = (worksheet[row][start_column].value if
+                                 type(worksheet[row][start_column].value) is
+                                 not None else 0.0)
+        security.month_to_date = (worksheet[row][start_column + 1].value if
+                                  type(worksheet[row][start_column + 1].value)
+                                  is not None else 0.0)
+        security.quarter_to_date = (worksheet[row][start_column + 2].value if
+                                    type(worksheet[row][start_column + 2].value
+                                         ) is not None else 0.0)
+        security.one_year = (worksheet[row][start_column + 3].value if
+                             type(worksheet[row][start_column + 3].value) is
+                             not None else 0.0)
+        security.three_year = (worksheet[row][start_column + 4].value if
+                               type(worksheet[row][start_column + 4].value) is
+                               not None else 0.0)
+        security.five_year = (worksheet[row][start_column + 5].value if
+                              type(worksheet[row][start_column + 5].value) is
+                              not None else 0.0)
+
+        securities.append(security)
 
     return securities
 
@@ -158,6 +201,7 @@ settings_file.close()
 
 # Assign settings to variables
 report_path = settings['report_path']
+return_start_column = ord(settings['return_start_column'].lower()) - ord('a')
 bond_tickers = settings['bond_tickers']
 international_security_tickers = settings['international_security_tickers']
 domestic_security_tickers = settings['domestic_security_tickers']
@@ -166,35 +210,36 @@ index_positions = settings['index_positions']
 comparison_positions = settings['comparison_positions']
 print('Done.\n')
 
-review_workbook_filename = input('Enter the portfolio review spreadsheet ' +
-                                 'filename: ') + '.xlsx'
-summary_workbook_filename = input('Enter the portfolio summary spreadsheet ' +
-                                  'filename: ') + '.xlsx'
+# Load in workbooks
+review_workbook = read_workbook('portfolio review', True)[0]
+summary_workbook, summary_workbook_filename = read_workbook('portfolio ' +
+                                                            'summary', False)
 
-# Read in review worksheet as tuple
+# Read data from review worksheet
 print('\nReading review workbook... ', end='')
-review_workbook = load_workbook(report_path + review_workbook_filename,
-                                read_only=True, data_only=True)
 review_worksheet = tuple(review_workbook.active.rows)
 review_workbook.close()
 
 # Convert worksheet rows to SecurityReturn objects
 total_returns = get_security_info(review_worksheet,
                                   list(position['name'] for position in
-                                       total_return_positions), 3)
+                                       total_return_positions), 3,
+                                  return_start_column)
 indexes = get_security_info(review_worksheet,
                             list(position['ticker'] for position in
-                                 index_positions), 2)
-bonds = get_security_info(review_worksheet, bond_tickers, 2)
+                                 index_positions), 2, return_start_column)
+bonds = get_security_info(review_worksheet, bond_tickers, 2,
+                          return_start_column)
 international_securities = get_security_info(review_worksheet,
-                                             international_security_tickers, 2)
+                                             international_security_tickers, 2,
+                                             return_start_column)
 domestic_securities = get_security_info(review_worksheet,
-                                        domestic_security_tickers, 2)
+                                        domestic_security_tickers, 2,
+                                        return_start_column)
 print('Done.')
 
-# Load in summary worksheet
+# Read data from summary worksheet
 print('Writing to summary workbook... ', end='')
-summary_workbook = load_workbook(report_path + summary_workbook_filename)
 summary_worksheet = summary_workbook.active
 
 # Write in individual securities or total returns
@@ -215,4 +260,3 @@ write_comparison(summary_worksheet, domestic_securities,
 
 summary_workbook.save(report_path + summary_workbook_filename)
 print('Done!')
-input('\nPress \'Enter\' to quit.')

@@ -1,5 +1,6 @@
 {
     "report_path": "sample_reports/",
+    "return_start_column": "o",
     "bond_tickers": [
         "lsbdx",
         "merix",
