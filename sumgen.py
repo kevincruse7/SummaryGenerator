@@ -3,7 +3,7 @@ Processes for transferring data from proprietary portfolio review spreadsheet
 to summary spreadsheet.
 
 Author: Kevin Cruse
-Version: 1.2
+Version: 1.3
 """
 
 from json import loads
@@ -78,22 +78,34 @@ def get_security_info(worksheet, names, name_column, start_column):
 
         security.year_to_date = (worksheet[row][start_column].value if
                                  type(worksheet[row][start_column].value) is
-                                 not None else 0.0)
+                                 int or
+                                 type(worksheet[row][start_column].value) is
+                                 float else 0.0)
         security.month_to_date = (worksheet[row][start_column + 1].value if
                                   type(worksheet[row][start_column + 1].value)
-                                  is not None else 0.0)
+                                  is int or
+                                  type(worksheet[row][start_column + 1].value)
+                                  is float else 0.0)
         security.quarter_to_date = (worksheet[row][start_column + 2].value if
                                     type(worksheet[row][start_column + 2].value
-                                         ) is not None else 0.0)
+                                         ) is int or
+                                    type(worksheet[row][start_column + 2].value
+                                         ) is float else 0.0)
         security.one_year = (worksheet[row][start_column + 3].value if
                              type(worksheet[row][start_column + 3].value) is
-                             not None else 0.0)
+                             int or
+                             type(worksheet[row][start_column + 3].value) is
+                             float else 0.0)
         security.three_year = (worksheet[row][start_column + 4].value if
                                type(worksheet[row][start_column + 4].value) is
-                               not None else 0.0)
+                               int or
+                               type(worksheet[row][start_column + 4].value) is
+                               float else 0.0)
         security.five_year = (worksheet[row][start_column + 5].value if
                               type(worksheet[row][start_column + 5].value) is
-                              not None else 0.0)
+                              int or
+                              type(worksheet[row][start_column + 5].value) is
+                              float else 0.0)
 
         securities.append(security)
 
